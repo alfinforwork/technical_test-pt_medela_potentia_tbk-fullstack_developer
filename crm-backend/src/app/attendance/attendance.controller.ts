@@ -10,10 +10,14 @@ import {
   Put,
   Query,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Roles } from '../../common/decorators/roles.decorator';
 import { getErrorMessage } from '../../common/error.handler';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
 import Response from '../../common/response';
 import { S3Service } from '../../services/s3.service';
 import { AttendanceService } from './attendance.service';
@@ -22,6 +26,7 @@ import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
 
 @Controller('attendances')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class AttendanceController {
   constructor(
     private attendanceService: AttendanceService,
@@ -29,6 +34,7 @@ export class AttendanceController {
   ) {}
 
   @Post()
+  @Roles('employee', 'admin')
   @UseInterceptors(FileInterceptor('photo'))
   async create(
     @Body() createAttendanceDto: CreateAttendanceDto,
@@ -54,6 +60,7 @@ export class AttendanceController {
   }
 
   @Get()
+  @Roles('admin')
   async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
@@ -64,9 +71,7 @@ export class AttendanceController {
         'Attendances retrieved successfully',
         result.data,
         {
-          total: result.pagination.total,
-          page: result.pagination.page,
-          limit: result.pagination.limit,
+          pagination: result.pagination,
         },
       );
     } catch (error: unknown) {
@@ -78,6 +83,7 @@ export class AttendanceController {
   }
 
   @Get('user/:userId')
+  @Roles('employee', 'admin')
   async findByUserId(
     @Param('userId') userId: number,
     @Query('page') page: number = 1,
@@ -93,9 +99,7 @@ export class AttendanceController {
         'User attendances retrieved successfully',
         result.data,
         {
-          total: result.pagination.total,
-          page: result.pagination.page,
-          limit: result.pagination.limit,
+          pagination: result.pagination,
         },
       );
     } catch (error: unknown) {
@@ -107,6 +111,7 @@ export class AttendanceController {
   }
 
   @Get('employee/:employeeId')
+  @Roles('admin')
   async findByEmployeeId(
     @Param('employeeId') employeeId: number,
     @Query('page') page: number = 1,
@@ -122,9 +127,7 @@ export class AttendanceController {
         'Employee attendances retrieved successfully',
         result.data,
         {
-          total: result.pagination.total,
-          page: result.pagination.page,
-          limit: result.pagination.limit,
+          pagination: result.pagination,
         },
       );
     } catch (error: unknown) {
@@ -136,6 +139,7 @@ export class AttendanceController {
   }
 
   @Get('today/:employeeId')
+  @Roles('employee', 'admin')
   async getTodayAttendance(@Param('employeeId') employeeId: number) {
     try {
       const result =
@@ -153,6 +157,7 @@ export class AttendanceController {
   }
 
   @Get(':id')
+  @Roles('employee', 'admin')
   async findById(
     @Param('id', { transform: (val) => parseInt(val as string, 10) })
     id: number,
@@ -169,6 +174,7 @@ export class AttendanceController {
   }
 
   @Put(':id/checkout')
+  @Roles('employee', 'admin')
   @UseInterceptors(FileInterceptor('photo'))
   async checkOut(
     @Param('id', { transform: (val) => parseInt(val as string, 10) })
@@ -197,6 +203,7 @@ export class AttendanceController {
   }
 
   @Put(':id')
+  @Roles('admin')
   async update(
     @Param('id', { transform: (val) => parseInt(val as string, 10) })
     id: number,
@@ -217,6 +224,7 @@ export class AttendanceController {
   }
 
   @Delete(':id')
+  @Roles('admin')
   async delete(
     @Param('id', { transform: (val) => parseInt(val as string, 10) })
     id: number,

@@ -9,18 +9,24 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { Roles } from '../../common/decorators/roles.decorator';
 import { getErrorMessage } from '../../common/error.handler';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
 import Response from '../../common/response';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeeService } from './employee.service';
 
 @Controller('employees')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class EmployeeController {
   constructor(private employeeService: EmployeeService) {}
 
   @Post()
+  @Roles('admin')
   async create(@Body() createEmployeeDto: CreateEmployeeDto) {
     try {
       const result = await this.employeeService.create(createEmployeeDto);
@@ -34,6 +40,7 @@ export class EmployeeController {
   }
 
   @Get()
+  @Roles('admin')
   async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
@@ -41,9 +48,7 @@ export class EmployeeController {
     try {
       const result = await this.employeeService.findAll(page, limit);
       return Response.success('Employees retrieved successfully', result.data, {
-        total: result.pagination.total,
-        page: result.pagination.page,
-        limit: result.pagination.limit,
+        pagination: result.pagination,
       });
     } catch (error: unknown) {
       throw new HttpException(
@@ -54,6 +59,7 @@ export class EmployeeController {
   }
 
   @Get('active')
+  @Roles('admin', 'employee')
   async getActiveEmployees() {
     try {
       const result = await this.employeeService.getActiveEmployees();
@@ -70,6 +76,7 @@ export class EmployeeController {
   }
 
   @Get('user/:userId')
+  @Roles('admin', 'employee')
   async getByUserId(@Param('userId') userId: number) {
     try {
       const result = await this.employeeService.findByUserId(userId);
@@ -83,6 +90,7 @@ export class EmployeeController {
   }
 
   @Get(':id')
+  @Roles('admin', 'employee')
   async findById(
     @Param('id', { transform: (val) => parseInt(val as string, 10) })
     id: number,
@@ -99,6 +107,7 @@ export class EmployeeController {
   }
 
   @Put(':id')
+  @Roles('admin')
   async update(
     @Param('id', { transform: (val) => parseInt(val as string, 10) })
     id: number,
@@ -116,6 +125,7 @@ export class EmployeeController {
   }
 
   @Delete(':id')
+  @Roles('admin')
   async delete(
     @Param('id', { transform: (val) => parseInt(val as string, 10) })
     id: number,
@@ -132,6 +142,7 @@ export class EmployeeController {
   }
 
   @Put(':id/deactivate')
+  @Roles('admin')
   async deactivateEmployee(
     @Param('id', { transform: (val) => parseInt(val as string, 10) })
     id: number,
@@ -148,6 +159,7 @@ export class EmployeeController {
   }
 
   @Put(':id/activate')
+  @Roles('admin')
   async activateEmployee(
     @Param('id', { transform: (val) => parseInt(val as string, 10) })
     id: number,

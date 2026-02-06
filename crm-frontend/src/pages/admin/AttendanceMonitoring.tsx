@@ -138,7 +138,7 @@ const AttendanceMonitoring: React.FC = () => {
         </div>
       )}
 
-      {pagination.pages > 1 && (
+      {pagination?.pages > 1 && (
         <Pagination
           currentPage={currentPage}
           totalPages={pagination.pages}
