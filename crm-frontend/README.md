@@ -1,70 +1,103 @@
-# Getting Started with Create React App
+# CRM Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Employee attendance and management system built with React, Redux, and TypeScript.
 
-## Available Scripts
+## Technologies
 
-In the project directory, you can run:
+- **React 19.2.4** - UI framework
+- **TypeScript 5.9.3** - Type-safe JavaScript
+- **Redux Toolkit 2.11.2** - State management
+- **Tailwind CSS 3** - Utility-first CSS framework
+- **Axios 1.13.4** - HTTP client
+- **React Router 7.13.0** - Client-side routing
+- **React Icons 5.5.0** - Icon library
 
-### `npm start`
+## Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Node.js (v16 or higher)
+- npm or yarn
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Installation
 
-### `npm test`
+```bash
+cd crm-frontend
+npm install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Running the Application
 
-### `npm run build`
+### Development Mode
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Opens [http://localhost:3000](http://localhost:3000) in your browser. The page will reload when you make changes.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Production Build
 
-### `npm run eject`
+```bash
+npm run build
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Builds the app for production to the `build` folder. The build is optimized and ready for deployment.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Testing
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm test
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Launches the test runner in interactive watch mode.
 
-## Learn More
+## Project Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+src/
+├── components/          # Reusable UI components
+│   ├── atoms/          # Basic components (Button, Input, Card, etc.)
+│   ├── molecules/      # Composite components (FormField, Pagination)
+│   ├── organisms/      # Complex components (Forms, Header)
+│   └── layouts/        # Page layouts (AdminLayout, UserLayout)
+├── pages/              # Page components
+│   ├── admin/         # Admin pages (Dashboard, Attendance Monitoring, Manage Employee)
+│   ├── auth/          # Auth pages (Login, Register)
+│   └── user/          # User pages (Employee Dashboard)
+├── redux/             # State management
+│   ├── store.ts       # Redux store configuration
+│   ├── slices/        # Redux slices (auth, employee, attendance)
+│   └── actions/       # Redux action creators
+├── routes/            # Route configuration
+│   ├── AppRoutes.tsx  # Main routing setup
+│   └── ProtectedRoute.tsx  # Route protection logic
+├── services/          # API services
+│   └── api.ts         # Axios instance and API calls
+├── utils/             # Utility functions
+└── App.tsx            # Root component
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
 
-### Code Splitting
+## Key Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **Authentication** - User login and registration
+- **Employee Management** - Create, read, update, delete employees
+- **Attendance Tracking** - Check-in/check-out with photo capture
+- **Dashboard** - View attendance statistics and employee data
+- **Role-based Access** - Different views for admin and employees
 
-### Analyzing the Bundle Size
+## API Integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The frontend communicates with the backend API at `http://localhost:3001/api`.
 
-### Making a Progressive Web App
+Key endpoints used:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `GET /api/employees` - Get all employees
+- `POST /api/employees` - Create employee
+- `GET /api/employees/:id` - Get employee by ID
+- `PUT /api/employees/:id` - Update employee
+- `DELETE /api/employees/:id` - Delete employee
+- `POST /api/attendances` - Check-in
+- `PUT /api/attendances/:id/checkout` - Check-out
+- `GET /api/attendances` - Get all attendances

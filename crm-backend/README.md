@@ -1,98 +1,584 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# CRM Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+RESTful API for employee attendance and management system built with NestJS and TypeORM.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Technologies
 
-## Description
+- **NestJS 11.0.1** - Progressive Node.js framework
+- **TypeScript 5.9.3** - Type-safe JavaScript
+- **TypeORM 0.3.28** - Object-Relational Mapping
+- **MySQL 8** - Database
+- **JWT** - Authentication
+- **AWS S3** - File storage for photos
+- **bcryptjs** - Password hashing
+- **Passport** - Authentication middleware
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
 
-## Project setup
+- Node.js (v16 or higher)
+- npm or yarn
+- MySQL server running
+- AWS S3 bucket (for file uploads)
+
+## Installation
 
 ```bash
-$ yarn install
+cd crm-backend
+npm install
 ```
 
-## Compile and run the project
+## Environment Setup
+
+Create a `.env` file in the root directory:
+
+```env
+# Database
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=password
+DB_NAME=crm_db
+
+# JWT
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRATION=7d
+
+# AWS S3
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_S3_BUCKET=your_bucket_name
+
+# Server
+PORT=3001
+NODE_ENV=development
+```
+
+## Running the Application
+
+### Development Mode
 
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+npm run start:dev
 ```
 
-## Run tests
+Starts the server with watch mode. Changes to files will automatically reload the server.
+
+### Production Mode
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+npm run build
+npm run start:prod
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Watch Mode (without start)
 
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+npm run start:watch
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Running Tests
 
-## Resources
+```bash
+# Unit tests
+npm run test
 
-Check out a few resources that may come in handy when working with NestJS:
+# Test with coverage
+npm run test:cov
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# E2E tests
+npm run test:e2e
+```
 
-## Support
+## Project Structure
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+src/
+├── app/                 # Application modules
+│   ├── auth/           # Authentication module
+│   │   ├── auth.controller.ts
+│   │   ├── auth.service.ts
+│   │   ├── auth.module.ts
+│   │   └── dto/
+│   ├── employee/       # Employee management module
+│   │   ├── employee.controller.ts
+│   │   ├── employee.service.ts
+│   │   ├── employee.module.ts
+│   │   └── dto/
+│   └── attendance/     # Attendance tracking module
+│       ├── attendance.controller.ts
+│       ├── attendance.service.ts
+│       ├── attendance.module.ts
+│       └── dto/
+├── common/             # Common utilities
+│   ├── error.handler.ts    # Error handling
+│   └── response.ts         # Standardized response format
+├── config/             # Configuration files
+│   ├── database.config.ts
+│   └── jwt.config.ts
+├── entities/           # Database entities
+│   ├── user.entity.ts
+│   ├── employee.entity.ts
+│   └── attendance.entity.ts
+├── services/           # Shared services
+│   └── s3.service.ts   # AWS S3 file upload
+├── seed/               # Database seeding
+│   └── seed.service.ts
+└── main.ts            # Application entry point
+```
 
-## Stay in touch
+## API Documentation
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Base URL
 
-## License
+```
+http://localhost:3001/api
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Authentication Endpoints
+
+#### Register User
+
+```
+POST /auth/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "name": "John Doe",
+  "role": "employee"
+}
+
+Response: 201 Created
+{
+  "success": true,
+  "message": "User registered successfully",
+  "data": {
+    "id": 1,
+    "email": "user@example.com",
+    "name": "John Doe",
+    "role": "employee"
+  }
+}
+```
+
+#### Login
+
+```
+POST /auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "id": 1,
+    "email": "user@example.com",
+    "name": "John Doe",
+    "token": "eyJhbGciOiJIUzI1NiIs..."
+  }
+}
+```
+
+### Employee Endpoints
+
+#### Get All Employees (Paginated)
+
+```
+GET /employees?page=1&limit=10
+Authorization: Bearer {token}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Employees retrieved successfully",
+  "data": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "department": "IT",
+      "position": "Developer",
+      "isActive": true
+    }
+  ],
+  "total": 50,
+  "page": 1,
+  "limit": 10
+}
+```
+
+#### Get Active Employees
+
+```
+GET /employees/active
+Authorization: Bearer {token}
+
+Response: 200 OK
+```
+
+#### Get Employee by ID
+
+```
+GET /employees/:id
+Authorization: Bearer {token}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Employee retrieved successfully",
+  "data": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "department": "IT",
+    "position": "Developer",
+    "isActive": true
+  }
+}
+```
+
+#### Get Employee by User ID
+
+```
+GET /employees/user/:userId
+Authorization: Bearer {token}
+
+Response: 200 OK
+```
+
+#### Create Employee
+
+```
+POST /employees
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "name": "John Doe",
+  "email": "john@example.com",
+  "department": "IT",
+  "position": "Developer"
+}
+
+Response: 201 Created
+{
+  "success": true,
+  "message": "Employee created successfully",
+  "data": {
+    "id": 1,
+    "userId": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "department": "IT",
+    "position": "Developer",
+    "isActive": true
+  }
+}
+```
+
+#### Update Employee
+
+```
+PUT /employees/:id
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "department": "HR",
+  "position": "Manager"
+}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Employee updated successfully",
+  "data": { ... }
+}
+```
+
+#### Deactivate Employee
+
+```
+PUT /employees/:id/deactivate
+Authorization: Bearer {token}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Employee deactivated successfully",
+  "data": { ... }
+}
+```
+
+#### Activate Employee
+
+```
+PUT /employees/:id/activate
+Authorization: Bearer {token}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Employee activated successfully",
+  "data": { ... }
+}
+```
+
+#### Delete Employee
+
+```
+DELETE /employees/:id
+Authorization: Bearer {token}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Employee deleted successfully",
+  "data": null
+}
+```
+
+### Attendance Endpoints
+
+#### Check-in (Create Attendance)
+
+```
+POST /attendances
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+
+{
+  "employeeId": 1,
+  "checkInTime": "2024-01-15T09:00:00Z",
+  "photo": <file>
+}
+
+Response: 201 Created
+{
+  "success": true,
+  "message": "Attendance checked in successfully",
+  "data": {
+    "id": 1,
+    "employeeId": 1,
+    "checkInTime": "2024-01-15T09:00:00Z",
+    "checkOutTime": null,
+    "photoUrl": "https://s3.amazonaws.com/bucket/..."
+  }
+}
+```
+
+#### Get All Attendances (Paginated)
+
+```
+GET /attendances?page=1&limit=10
+Authorization: Bearer {token}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Attendances retrieved successfully",
+  "data": [
+    {
+      "id": 1,
+      "employeeId": 1,
+      "checkInTime": "2024-01-15T09:00:00Z",
+      "checkOutTime": "2024-01-15T17:00:00Z",
+      "photoUrl": "https://s3.amazonaws.com/bucket/..."
+    }
+  ],
+  "total": 100,
+  "page": 1,
+  "limit": 10
+}
+```
+
+#### Get Attendance by User ID (Paginated)
+
+```
+GET /attendances/user/:userId?page=1&limit=10
+Authorization: Bearer {token}
+
+Response: 200 OK
+```
+
+#### Get Attendance by Employee ID (Paginated)
+
+```
+GET /attendances/employee/:employeeId?page=1&limit=10
+Authorization: Bearer {token}
+
+Response: 200 OK
+```
+
+#### Get Today's Attendance
+
+```
+GET /attendances/today/:employeeId
+Authorization: Bearer {token}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Today attendance retrieved successfully",
+  "data": {
+    "id": 1,
+    "employeeId": 1,
+    "checkInTime": "2024-01-15T09:00:00Z",
+    "checkOutTime": null,
+    "photoUrl": "https://s3.amazonaws.com/bucket/..."
+  }
+}
+```
+
+#### Get Attendance by ID
+
+```
+GET /attendances/:id
+Authorization: Bearer {token}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Attendance retrieved successfully",
+  "data": { ... }
+}
+```
+
+#### Check-out
+
+```
+PUT /attendances/:id/checkout
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+
+{
+  "checkOutTime": "2024-01-15T17:00:00Z",
+  "photo": <file>
+}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Attendance checked out successfully",
+  "data": {
+    "id": 1,
+    "employeeId": 1,
+    "checkInTime": "2024-01-15T09:00:00Z",
+    "checkOutTime": "2024-01-15T17:00:00Z",
+    "photoUrl": "https://s3.amazonaws.com/bucket/..."
+  }
+}
+```
+
+#### Update Attendance
+
+```
+PUT /attendances/:id
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "checkInTime": "2024-01-15T09:30:00Z"
+}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Attendance updated successfully",
+  "data": { ... }
+}
+```
+
+#### Delete Attendance
+
+```
+DELETE /attendances/:id
+Authorization: Bearer {token}
+
+Response: 200 OK
+{
+  "success": true,
+  "message": "Attendance deleted successfully",
+  "data": null
+}
+```
+
+## Error Handling
+
+All errors follow a consistent format:
+
+```json
+{
+  "success": false,
+  "message": "Error description",
+  "error": "Error details"
+}
+```
+
+HTTP Status Codes:
+
+- `200` - OK
+- `201` - Created
+- `400` - Bad Request
+- `401` - Unauthorized
+- `403` - Forbidden
+- `404` - Not Found
+- `500` - Internal Server Error
+
+## Database Schema
+
+### Users Table
+
+```sql
+CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  role ENUM('admin', 'employee') DEFAULT 'employee',
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### Employees Table
+
+```sql
+CREATE TABLE employees (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  userId INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255),
+  department VARCHAR(255),
+  position VARCHAR(255),
+  isActive BOOLEAN DEFAULT true,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (userId) REFERENCES users(id)
+);
+```
+
+### Attendances Table
+
+```sql
+CREATE TABLE attendances (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  employeeId INT NOT NULL,
+  checkInTime TIMESTAMP NOT NULL,
+  checkOutTime TIMESTAMP,
+  photoUrl VARCHAR(500),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (employeeId) REFERENCES employees(id)
+);
+```
