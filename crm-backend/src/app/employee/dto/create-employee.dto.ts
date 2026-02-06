@@ -1,4 +1,10 @@
-import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsMobilePhone,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 export class CreateEmployeeDto {
   @IsString()
@@ -12,7 +18,7 @@ export class CreateEmployeeDto {
   password!: string;
 
   @IsOptional()
-  @IsString()
+  @IsMobilePhone()
   phone?: string;
 
   @IsOptional()
