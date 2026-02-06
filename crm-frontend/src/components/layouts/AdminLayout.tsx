@@ -56,7 +56,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           sidebarOpen ? "w-64" : "w-20"
         } bg-gradient-to-b from-gray-900 to-gray-800 text-white transition-all duration-300 shadow-lg flex flex-col`}
       >
-        {/* Logo */}
         <div className="p-6 border-b border-gray-700">
           <div className="flex items-center justify-between">
             <h2 className={`font-bold text-lg ${!sidebarOpen && "hidden"}`}>

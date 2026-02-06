@@ -9,7 +9,6 @@ const api = axios.create({
   },
 });
 
-// Add token to requests
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token) {
@@ -18,7 +17,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Auth endpoints
 export const authAPI = {
   register: (email: string, password: string, name: string, role?: string) =>
     api.post("/auth/register", { email, password, name, role }),
@@ -26,7 +24,6 @@ export const authAPI = {
     api.post("/auth/login", { email, password }),
 };
 
-// Employee endpoints
 export const employeeAPI = {
   getAll: (page = 1, limit = 10) =>
     api.get("/employees", { params: { page, limit } }),
@@ -40,7 +37,6 @@ export const employeeAPI = {
   deactivate: (id: number) => api.put(`/employees/${id}/deactivate`),
 };
 
-// Attendance endpoints
 export const attendanceAPI = {
   getAll: (page = 1, limit = 10) =>
     api.get("/attendances", { params: { page, limit } }),
@@ -55,12 +51,10 @@ export const attendanceAPI = {
   create: (data: any) => {
     const formData = new FormData();
 
-    // Handle file upload
     if (data.photoFile) {
       formData.append("photo", data.photoFile);
     }
 
-    // Add other fields
     formData.append("userId", data.userId);
     formData.append("employeeId", data.employeeId);
     formData.append("checkInTime", data.checkInTime);
