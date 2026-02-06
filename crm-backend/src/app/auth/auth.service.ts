@@ -45,7 +45,6 @@ export class AuthService {
         userId: savedUser.id,
         name: savedUser.name,
         email: savedUser.email,
-        nip: `EMP-${String(savedUser.id).padStart(6, '0')}`, // Generate a temporary NIP
         isActive: true,
       });
     }
