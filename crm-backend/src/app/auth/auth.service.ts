@@ -21,7 +21,6 @@ export class AuthService {
   async register(registerDto: RegisterDto) {
     const { email, password, name, role } = registerDto;
 
-    // Check if user already exists
     const existingUser = await this.userRepository.findOne({
       where: { email },
     });
@@ -30,10 +29,8 @@ export class AuthService {
       throw new Error('User with this email already exists');
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user
     const user = this.userRepository.create({
       email,
       password: hashedPassword,
@@ -43,7 +40,6 @@ export class AuthService {
 
     const savedUser = await this.userRepository.save(user);
 
-    // Auto-create employee record if role is 'employee'
     if (savedUser.role === 'employee') {
       await this.employeeRepository.save({
         userId: savedUser.id,
@@ -54,7 +50,6 @@ export class AuthService {
       });
     }
 
-    // Return user without password
     const userResponse = {
       id: savedUser.id,
       email: savedUser.email,
@@ -70,7 +65,6 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
 
-    // Find user by email
     const user = await this.userRepository.findOne({
       where: { email },
     });
@@ -79,7 +73,6 @@ export class AuthService {
       throw new Error('Invalid email or password');
     }
 
-    // Compare passwords
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -90,7 +83,6 @@ export class AuthService {
       throw new Error('User account is inactive');
     }
 
-    // Generate JWT token
     const token = this.jwtService.sign({
       sub: user.id,
       email: user.email,

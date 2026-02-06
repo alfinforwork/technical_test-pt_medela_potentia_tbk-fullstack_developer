@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
+import Response from '../../common/response';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
@@ -17,11 +18,7 @@ export class AuthController {
   async register(@Body() registerDto: RegisterDto) {
     try {
       const result = await this.authService.register(registerDto);
-      return {
-        success: true,
-        message: 'User registered successfully',
-        data: result,
-      };
+      return Response.success('User registered successfully', result);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'An error occurred';
@@ -33,11 +30,7 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto) {
     try {
       const result = await this.authService.login(loginDto);
-      return {
-        success: true,
-        message: 'Login successful',
-        data: result,
-      };
+      return Response.success('Login successful', result);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'An error occurred';

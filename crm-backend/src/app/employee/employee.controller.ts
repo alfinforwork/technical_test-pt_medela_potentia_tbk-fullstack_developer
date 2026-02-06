@@ -11,6 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { getErrorMessage } from '../../common/error.handler';
+import Response from '../../common/response';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { EmployeeService } from './employee.service';
@@ -23,11 +24,7 @@ export class EmployeeController {
   async create(@Body() createEmployeeDto: CreateEmployeeDto) {
     try {
       const result = await this.employeeService.create(createEmployeeDto);
-      return {
-        success: true,
-        message: 'Employee created successfully',
-        data: result,
-      };
+      return Response.success('Employee created successfully', result);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to create employee'),
@@ -43,11 +40,11 @@ export class EmployeeController {
   ) {
     try {
       const result = await this.employeeService.findAll(page, limit);
-      return {
-        success: true,
-        message: 'Employees retrieved successfully',
-        ...result,
-      };
+      return Response.success('Employees retrieved successfully', result.data, {
+        total: result.pagination.total,
+        page: result.pagination.page,
+        limit: result.pagination.limit,
+      });
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to fetch employees'),
@@ -60,11 +57,10 @@ export class EmployeeController {
   async getActiveEmployees() {
     try {
       const result = await this.employeeService.getActiveEmployees();
-      return {
-        success: true,
-        message: 'Active employees retrieved successfully',
-        data: result,
-      };
+      return Response.success(
+        'Active employees retrieved successfully',
+        result,
+      );
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to fetch active employees'),
@@ -77,11 +73,7 @@ export class EmployeeController {
   async getByUserId(@Param('userId') userId: number) {
     try {
       const result = await this.employeeService.findByUserId(userId);
-      return {
-        success: true,
-        message: 'Employee retrieved successfully',
-        data: result,
-      };
+      return Response.success('Employee retrieved successfully', result);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Employee not found'),
@@ -97,11 +89,7 @@ export class EmployeeController {
   ) {
     try {
       const result = await this.employeeService.findById(id);
-      return {
-        success: true,
-        message: 'Employee retrieved successfully',
-        data: result,
-      };
+      return Response.success('Employee retrieved successfully', result);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Employee not found'),
@@ -118,11 +106,7 @@ export class EmployeeController {
   ) {
     try {
       const result = await this.employeeService.update(id, updateEmployeeDto);
-      return {
-        success: true,
-        message: 'Employee updated successfully',
-        data: result,
-      };
+      return Response.success('Employee updated successfully', result);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to update employee'),
@@ -138,10 +122,7 @@ export class EmployeeController {
   ) {
     try {
       await this.employeeService.delete(id);
-      return {
-        success: true,
-        message: 'Employee deleted successfully',
-      };
+      return Response.success('Employee deleted successfully', null);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to delete employee'),
@@ -157,11 +138,7 @@ export class EmployeeController {
   ) {
     try {
       const result = await this.employeeService.deactivateEmployee(id);
-      return {
-        success: true,
-        message: 'Employee deactivated successfully',
-        data: result,
-      };
+      return Response.success('Employee deactivated successfully', result);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to deactivate employee'),
@@ -177,11 +154,7 @@ export class EmployeeController {
   ) {
     try {
       const result = await this.employeeService.activateEmployee(id);
-      return {
-        success: true,
-        message: 'Employee activated successfully',
-        data: result,
-      };
+      return Response.success('Employee activated successfully', result);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to activate employee'),

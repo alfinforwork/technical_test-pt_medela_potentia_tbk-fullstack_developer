@@ -20,7 +20,6 @@ export class EmployeeService {
     const { email, password, name, phone, position, department } =
       createEmployeeDto;
 
-    // Check if user already exists
     const existingUser = await this.userRepository.findOne({
       where: { email },
     });
@@ -29,10 +28,8 @@ export class EmployeeService {
       throw new Error('User with this email already exists');
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user
     const user = this.userRepository.create({
       email,
       password: hashedPassword,
@@ -42,7 +39,6 @@ export class EmployeeService {
 
     const savedUser = await this.userRepository.save(user);
 
-    // Create employee record
     const employee = this.employeeRepository.create({
       userId: savedUser.id,
       name,
@@ -110,7 +106,6 @@ export class EmployeeService {
     const employee = await this.findById(id);
     const { email, password, ...rest } = updateEmployeeDto;
 
-    // If email is being updated, check if it's already in use
     if (email && email !== employee.email) {
       const existingUser = await this.userRepository.findOne({
         where: { email },
@@ -120,7 +115,6 @@ export class EmployeeService {
       }
     }
 
-    // Update employee fields
     const updated = this.employeeRepository.merge(employee, rest);
     if (email) {
       updated.email = email;
@@ -128,7 +122,6 @@ export class EmployeeService {
 
     const savedEmployee = await this.employeeRepository.save(updated);
 
-    // Update user record if email or password changed
     if (email || password) {
       const user = await this.userRepository.findOne({
         where: { id: employee.userId },

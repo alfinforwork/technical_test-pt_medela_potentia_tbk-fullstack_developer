@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { getErrorMessage } from '../../common/error.handler';
+import Response from '../../common/response';
 import { S3Service } from '../../services/s3.service';
 import { AttendanceService } from './attendance.service';
 import { CheckOutDto } from './dto/check-out.dto';
@@ -43,11 +44,7 @@ export class AttendanceController {
         ...createAttendanceDto,
         photoUrl,
       });
-      return {
-        success: true,
-        message: 'Attendance checked in successfully',
-        data: result,
-      };
+      return Response.success('Attendance checked in successfully', result);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to check in'),
@@ -63,11 +60,15 @@ export class AttendanceController {
   ) {
     try {
       const result = await this.attendanceService.findAll(page, limit);
-      return {
-        success: true,
-        message: 'Attendances retrieved successfully',
-        ...result,
-      };
+      return Response.success(
+        'Attendances retrieved successfully',
+        result.data,
+        {
+          total: result.pagination.total,
+          page: result.pagination.page,
+          limit: result.pagination.limit,
+        },
+      );
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to fetch attendances'),
@@ -88,11 +89,15 @@ export class AttendanceController {
         page,
         limit,
       );
-      return {
-        success: true,
-        message: 'User attendances retrieved successfully',
-        ...result,
-      };
+      return Response.success(
+        'User attendances retrieved successfully',
+        result.data,
+        {
+          total: result.pagination.total,
+          page: result.pagination.page,
+          limit: result.pagination.limit,
+        },
+      );
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to fetch user attendances'),
@@ -113,11 +118,15 @@ export class AttendanceController {
         page,
         limit,
       );
-      return {
-        success: true,
-        message: 'Employee attendances retrieved successfully',
-        ...result,
-      };
+      return Response.success(
+        'Employee attendances retrieved successfully',
+        result.data,
+        {
+          total: result.pagination.total,
+          page: result.pagination.page,
+          limit: result.pagination.limit,
+        },
+      );
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to fetch employee attendances'),
@@ -131,11 +140,10 @@ export class AttendanceController {
     try {
       const result =
         await this.attendanceService.getTodayAttendance(employeeId);
-      return {
-        success: true,
-        message: 'Today attendance retrieved successfully',
-        data: result,
-      };
+      return Response.success(
+        'Today attendance retrieved successfully',
+        result,
+      );
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to fetch today attendance'),
@@ -151,11 +159,7 @@ export class AttendanceController {
   ) {
     try {
       const result = await this.attendanceService.findById(id);
-      return {
-        success: true,
-        message: 'Attendance retrieved successfully',
-        data: result,
-      };
+      return Response.success('Attendance retrieved successfully', result);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Attendance not found'),
@@ -183,11 +187,7 @@ export class AttendanceController {
         checkOutDto.checkOutTime,
         photoUrl,
       );
-      return {
-        success: true,
-        message: 'Attendance checked out successfully',
-        data: result,
-      };
+      return Response.success('Attendance checked out successfully', result);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to check out'),
@@ -207,11 +207,7 @@ export class AttendanceController {
         id,
         updateAttendanceDto,
       );
-      return {
-        success: true,
-        message: 'Attendance updated successfully',
-        data: result,
-      };
+      return Response.success('Attendance updated successfully', result);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to update attendance'),
@@ -227,10 +223,7 @@ export class AttendanceController {
   ) {
     try {
       await this.attendanceService.delete(id);
-      return {
-        success: true,
-        message: 'Attendance deleted successfully',
-      };
+      return Response.success('Attendance deleted successfully', null);
     } catch (error: unknown) {
       throw new HttpException(
         getErrorMessage(error, 'Failed to delete attendance'),
